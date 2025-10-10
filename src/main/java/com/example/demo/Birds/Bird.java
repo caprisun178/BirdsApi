@@ -12,85 +12,87 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "birds")
 public class Bird {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long birdId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long birdId;
 
-  @Column(nullable = false)
-  private String name;
+    @Column(nullable = false)
+    private String name;
 
-  private String description;
-  private String habitat;
-  private String idInfo;
-  private String Gender;
+    private String habitat;
+    private String idInfo;
+    private String Gender;
 
-  @Column(nullable = false)
-  private Date lastSeen;
+    @Column(nullable = false)
+    private Date lastSeen;
 
-  public Bird() {
-  }
+    @Column(length = 500)
+    private String description;
 
-  public Bird(Long birdId, String name, String description, String habitat, String idInfo, String gender) {
-    this.birdId = birdId;
-    this.name = name;
-    this.description = description;
-    this.habitat = habitat;
-    this.idInfo = idInfo;
-    this.Gender = gender;
-  }
+    public Bird() {
+    }
 
-  public Bird(String name, String description, String habitat, String idInfo) {
-    this.name = name;
-    this.description = description;
-    this.habitat = habitat;
-    this.idInfo = idInfo;
-  }
+    public Bird(Long birdId, String name, String description, String habitat, String idInfo, String gender) {
+        this.birdId = birdId;
+        this.name = name;
+        this.description = description;
+        this.habitat = habitat;
+        this.idInfo = idInfo;
+        this.Gender = gender;
+    }
 
-  public Long getBirdId() {
-    return birdId;
-  }
+    public Bird(String name, String description, String habitat, String idInfo) {
+        this.name = name;
+        this.description = description;
+        this.habitat = habitat;
+        this.idInfo = idInfo;
+    }
 
-  public void setBirdId(Long id) {
-    this.birdId = id;
-  }
+    public Long getBirdId() {
+        return birdId;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setBirdId(Long id) {
+        this.birdId = id;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  public String getHabitat() {
-    return habitat;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  public void setHabitat(String habitat) {
-    this.habitat = habitat;
-  }
+    public String getHabitat() {
+        return habitat;
+    }
 
-  public String getIdInfo() {
-    return idInfo;
-  }
+    public void setHabitat(String habitat) {
+        this.habitat = habitat;
+    }
 
-  public void setIdInfo(String idInfo) {
-    this.idInfo = idInfo;
-  }
+    public String getIdInfo() {
+        return idInfo;
+    }
 
-  public String getGender() {
-    return Gender;
-  }
+    public void setIdInfo(String idInfo) {
+        this.idInfo = idInfo;
+    }
 
-  public void setGender(String gender) {
-    this.Gender = gender;
-  }
+    public String getGender() {
+        return Gender;
+    }
+
+    public void setGender(String gender) {
+        this.Gender = gender;
+    }
 }
