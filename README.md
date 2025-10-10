@@ -8,7 +8,7 @@ Simple CRUD API for Bird Objects with JPA (Hibernate)
 - Get the project
     - clone
         ```
-      git clone https://github.com/uncg-csc340/su25-jpa-crud-api.git
+      git clone https://github.com/caprisun178/BirdsApi.git
         ```
     - OR download zip.
 - Open the project in VS Code.
