@@ -15,6 +15,7 @@ public class BirdController {
 
   @Autowired
   private BirdService birdService;
+  private BirdController birdController;
 
   /**
    * Endpoint to get all birds
@@ -25,6 +26,7 @@ public class BirdController {
   public Object getAllBirds() {
     return birdService.getAllBirds();
   }
+
 
   /**
    * Endpoint to get a bird by ID
@@ -43,14 +45,26 @@ public class BirdController {
    * @param name The name of the bird to search for
    * @return List of birds with the specified name
    */
-  @GetMapping("/birds/name")
-  public Object getBirdsByName(@RequestParam String key) {
-    if (key != null) {
-      return birdService.getBirdsByName(key);
+  @GetMapping("/birds/search")
+  public Object getBirdsByName(@RequestParam String name) {
+    if (name != null) {
+      return birdService.getBirdsByName(name);
     } else {
       return birdService.getAllBirds();
     }
 
+  }
+
+  
+  /**
+   * Endpoint to get birds by gender
+   *
+   * @param habitat The gender to search for
+   * @return List of birds with the specified gender
+   */
+  @GetMapping("/birds/habitat/{habitat}")
+  public Object getBirdsByHabitat(@PathVariable String habitat) {
+    return birdService.getBirdsByHabitat(habitat);
   }
 
   /**

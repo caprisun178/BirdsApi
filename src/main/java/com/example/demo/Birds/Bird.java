@@ -97,11 +97,11 @@ public class Bird {
         this.Gender = gender;
     }
 
-     public String getLastSeen() {
+     public Date getLastSeen() {
         return LastSeen;
     }
 
-    public void setLastSeen(String lastSeen) {
+    public void setLastSeen(Date lastSeen) {
         this.LastSeen = lastSeen;
     }
 }
