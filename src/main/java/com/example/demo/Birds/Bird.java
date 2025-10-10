@@ -23,8 +23,8 @@ public class Bird {
     private String idInfo;
     private String Gender;
 
-    @Column(nullable = false)
-    private Date lastSeen;
+    @Column(nullable = true)
+    private Date LastSeen;
 
     @Column(length = 500)
     private String description;
@@ -32,13 +32,14 @@ public class Bird {
     public Bird() {
     }
 
-    public Bird(Long birdId, String name, String description, String habitat, String idInfo, String gender) {
+    public Bird(Long birdId, String name, String description, String habitat, String idInfo, String gender, Date lastSeen) {
         this.birdId = birdId;
         this.name = name;
         this.description = description;
         this.habitat = habitat;
         this.idInfo = idInfo;
         this.Gender = gender;
+        this.LastSeen = lastSeen;
     }
 
     public Bird(String name, String description, String habitat, String idInfo) {
@@ -94,5 +95,13 @@ public class Bird {
 
     public void setGender(String gender) {
         this.Gender = gender;
+    }
+
+     public String getLastSeen() {
+        return LastSeen;
+    }
+
+    public void setLastSeen(String lastSeen) {
+        this.LastSeen = lastSeen;
     }
 }
