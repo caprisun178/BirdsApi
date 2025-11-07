@@ -1,7 +1,13 @@
 package com.example.demo.birds;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "birds")
@@ -20,10 +26,8 @@ public class Bird {
     private String gender;
     private LocalDate lastSeen;
 
-    // ✅ New field to store uploaded image file name
     private String imageFileName;
 
-    // ===== Constructors =====
     public Bird() {}
 
     public Bird(String name, String description, String habitat,
@@ -37,7 +41,6 @@ public class Bird {
         this.imageFileName = imageFileName;
     }
 
-    // ===== Getters / Setters =====
     public Long getBirdId() {
         return birdId;
     }
