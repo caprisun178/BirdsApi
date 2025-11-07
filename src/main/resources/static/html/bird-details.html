@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>${bird.name} – Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, h1, h3, h4, h5, p, li, a {
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+        }
+        body {
+            margin: 0;
+        }
+        nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+            padding: 0;
+            margin: 0;
+        }
+        nav a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #333;
+        }
+        .container {
+            margin: 0 auto;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">${bird.name}</h1>
+
+    <nav>
+        <ul>
+            <li><a href="/birds">Home</a></li>
+            <li><a href="/birds/about">About</a></li>
+            <li><a href="/birds/new">Add Bird</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Static image; you can later switch this to something dynamic if you add an image field -->
+        <img src="/images/Hummingbird-Online-1.jpg" alt="${bird.name}"
+             style="display:block; width:100%; max-width:800px; margin:0 auto;">
+
+        <h4 style="margin: 20px 50px 0 50px;">Description</h4>
+        <p style="margin:20px 50px;">
+            ${bird.description!''}
+        </p>
+
+        <section style="margin-top:40px;">
+            <h4 style="text-align:center;">Bird Info</h4>
+            <ul style="width:100%; max-width:600px; margin:0 auto; padding-left: 20px;">
+                <li><strong>ID:</strong> ${bird.birdId}</li>
+                <li><strong>Habitat:</strong> ${bird.habitat!''}</li>
+                <li><strong>Gender:</strong> ${bird.gender!''}</li>
+                <li><strong>Identification Info:</strong> ${bird.idInfo!''}</li>
+                <li><strong>Last Seen:</strong>
+                    <#if bird.lastSeen??>
+                        ${bird.lastSeen?string("yyyy-MM-dd")}
+                    <#else>
+                        Unknown
+                    </#if>
+                </li>
+            </ul>
+        </section>
+
+        <section style="margin-top:40px; text-align:center;">
+            <a href="/birds">Back to list</a> |
+            <a href="/birds/update/${bird.birdId}">Edit</a> |
+            <a href="/birds/delete/${bird.birdId}"
+               onclick="return confirm('Delete this bird?');">Delete</a>
+        </section>
+    </div>
+</body>
+</html>

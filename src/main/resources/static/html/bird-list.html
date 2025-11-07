@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bird Gallery</title>
+    <style>
+        body, h1, h3, h5, p, input, button, a {
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+        }
+        body {
+            background-color: lightgray;
+            margin: 0;
+        }
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+            padding: 0;
+            margin: 0;
+        }
+        nav a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #333;
+        }
+        .gallery-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+            margin: 20px;
+        }
+        .gallery-item {
+            flex: 1 1 250px;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .gallery-item:hover {
+            box-shadow: 0 0 10px #aaa;
+        }
+        .card-content {
+            padding: 16px;
+            width: 80%;
+            margin: 12px 10px 10px 10px;
+        }
+        .actions {
+            margin: 16px 20px;
+        }
+        form.search-form {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        form.search-form input {
+            width: 350px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Image Gallery</h1>
+    <nav>
+        <ul>
+            <li><a href="/birds">Home</a></li>
+            <li><a href="/birds/about">About</a></li>
+            <li><a href="/birds/new">Add Bird</a></li>
+        </ul>
+    </nav>
+
+    <!-- Optional: search by name (uses ?name=...) -->
+    <form class="search-form" method="get" action="/birds">
+        <input type="text" name="name" placeholder="Search by name..."
+               value="${searchTerm!}">
+        <button type="submit">Search</button>
+    </form>
+</header>
+
+<div class="actions">
+    <a href="/birds/new">+ Create New Bird</a>
+</div>
+
+<div id="gallery">
+    <#if birdList?has_content>
+        <div class="gallery-row">
+            <#list birdList as bird>
+                <section class="gallery-item" onclick="location.href='/birds/${bird.birdId}'">
+                    <!-- Static placeholder image; replace with your own logic if you later add an image URL field -->
+                    <img src="/images/Hummingbird-Online-1.jpg"
+                         alt="${bird.name}" width="100%">
+                    <div class="card-content">
+                        <h3>${bird.name}</h3>
+                        <h5>${bird.habitat!''}</h5>
+                        <p>${bird.description!''}</p>
+                        <p><strong>Last seen:</strong>
+                            <#if bird.lastSeen??>
+                                ${bird.lastSeen?string("yyyy-MM-dd")}
+                            <#else>
+                                Unknown
+                            </#if>
+                        </p>
+
+                        <p>
+                            <a href="/birds/${bird.birdId}">View</a> |
+                            <a href="/birds/update/${bird.birdId}">Edit</a> |
+                            <a href="/birds/delete/${bird.birdId}"
+                               onclick="return confirm('Delete this bird?');">Delete</a>
+                        </p>
+                    </div>
+                </section>
+            </#list>
+        </div>
+    <#else>
+        <p style="margin: 20px;">No birds found.</p>
+    </#if>
+</div>
+</body>
+</html>

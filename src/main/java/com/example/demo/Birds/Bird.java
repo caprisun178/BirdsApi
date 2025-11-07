@@ -1,60 +1,49 @@
 package com.example.demo.birds;
 
-import java.sql.Date;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "birds")
 public class Bird {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long birdId;
 
-    @Column(nullable = false)
     private String name;
+    @Column(length = 1000)
+    private String description;
 
     private String habitat;
     private String idInfo;
-    private String Gender;
+    private String gender;
+    private LocalDate lastSeen;
 
-    @Column(nullable = true)
-    private Date LastSeen;
+    // ✅ New field to store uploaded image file name
+    private String imageFileName;
 
-    @Column(length = 500)
-    private String description;
+    // ===== Constructors =====
+    public Bird() {}
 
-    public Bird() {
-    }
-
-    public Bird(Long birdId, String name, String description, String habitat, String idInfo, String gender, Date lastSeen) {
-        this.birdId = birdId;
+    public Bird(String name, String description, String habitat,
+                String idInfo, String gender, LocalDate lastSeen, String imageFileName) {
         this.name = name;
         this.description = description;
         this.habitat = habitat;
         this.idInfo = idInfo;
-        this.Gender = gender;
-        this.LastSeen = lastSeen;
+        this.gender = gender;
+        this.lastSeen = lastSeen;
+        this.imageFileName = imageFileName;
     }
 
-    public Bird(String name, String description, String habitat, String idInfo) {
-        this.name = name;
-        this.description = description;
-        this.habitat = habitat;
-        this.idInfo = idInfo;
-    }
-
+    // ===== Getters / Setters =====
     public Long getBirdId() {
         return birdId;
     }
 
-    public void setBirdId(Long id) {
-        this.birdId = id;
+    public void setBirdId(Long birdId) {
+        this.birdId = birdId;
     }
 
     public String getName() {
@@ -90,18 +79,26 @@ public class Bird {
     }
 
     public String getGender() {
-        return Gender;
+        return gender;
     }
 
     public void setGender(String gender) {
-        this.Gender = gender;
+        this.gender = gender;
     }
 
-     public Date getLastSeen() {
-        return LastSeen;
+    public LocalDate getLastSeen() {
+        return lastSeen;
     }
 
-    public void setLastSeen(Date lastSeen) {
-        this.LastSeen = lastSeen;
+    public void setLastSeen(LocalDate lastSeen) {
+        this.lastSeen = lastSeen;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 }

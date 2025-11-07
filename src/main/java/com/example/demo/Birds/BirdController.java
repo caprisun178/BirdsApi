@@ -1,137 +1,110 @@
 package com.example.demo.birds;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@RestController
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@Controller
+@RequestMapping("/birds")
 public class BirdController {
 
-  @Autowired
-  private BirdService birdService;
-  private BirdController birdController;
+    @Autowired
+    private BirdService birdService;
 
-  /**
-   * Endpoint to get all birds
-   *
-   * @return List of all birds
-   */
-  @GetMapping("/birds")
-  public Object getAllBirds() {
-    return birdService.getAllBirds();
-  }
+    private static final String UPLOAD_DIR = "uploads/images";
 
+    @GetMapping
+   @GetMapping
+public String getAllBirds(
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String gender,
+        @RequestParam(required = false) String habitat,
+        Model model) {
 
-  /**
-   * Endpoint to get a bird by ID
-   *
-   * @param id The ID of the bird to retrieve
-   * @return The bird with the specified ID
-   */
-  @GetMapping("/birds/{id}")
-  public Bird getBirdById(@PathVariable long id) {
-    return birdService.getBirdById(id);
-  }
+    List<Bird> birds;
 
-  /**
-   * Endpoint to get birds by name
-   *
-   * @param name The name of the bird to search for
-   * @return List of birds with the specified name
-   */
-  @GetMapping("/birds/search")
-  public Object getBirdsByName(@RequestParam String name) {
-    if (name != null) {
-      return birdService.getBirdsByName(name);
+    if ((name != null && !name.isEmpty()) ||
+        (gender != null && !gender.isEmpty()) ||
+        (habitat != null && !habitat.isEmpty())) {
+        birds = birdService.searchBirds(name, gender, habitat);
     } else {
-      return birdService.getAllBirds();
+        birds = birdService.getAllBirds();
     }
 
-  }
+    model.addAttribute("birdList", birds);
+    model.addAttribute("searchTerm", name);
+    model.addAttribute("gender", gender);
+    model.addAttribute("habitat", habitat);
 
-  
-  /**
-   * Endpoint to get birds by gender
-   *
-   * @param habitat The gender to search for
-   * @return List of birds with the specified gender
-   */
-  @GetMapping("/birds/habitat/{habitat}")
-  public Object getBirdsByHabitat(@PathVariable String habitat) {
-    return birdService.getBirdsByHabitat(habitat);
-  }
+    return "bird-list";
+}
 
-  /**
-   * Endpoint to get birds by gender
-   *
-   * @param gender The gender to search for
-   * @return List of birds with the specified gender
-   */
-  @GetMapping("/birds/gender/{gender}")
-  public Object getBirdsByGender(@PathVariable String gender) {
-    return birdService.getBirdsByGender(gender);
-  }
-    /**
-   * Endpoint to add a new bird
-   *
-   * @param bird The bird to add
-   * @return List of all birds
-   */
-  @PostMapping("/birds")
-  public Object addBird(@RequestBody Bird bird) {
-    return birdService.addBird(bird);
-  }
 
-  /**
-   * Endpoint to update a bird
-   *
-   * @param id      The ID of the bird to update
-   * @param bird The updated bird information
-   * @return The updated bird
-   */
-  @PutMapping("/birds/{id}")
-  public Bird updateBird(@PathVariable Long id, @RequestBody Bird bird) {
-    birdService.updateBird(id, bird);
-    return birdService.getBirdById(id);
-  }
+    @GetMapping("/{id}")
+    public String getBirdById(@PathVariable long id, Model model) {
+        Bird bird = birdService.getBirdById(id);
+        if (bird == null) {
+            return "redirect:/birds";
+        }
+        model.addAttribute("bird", bird);
+        return "bird-details";
+    }
 
-  /**
-   * Endpoint to delete a bird
-   *
-   * @param id The ID of the bird to delete
-   * @return List of all birds
-   */
-  @DeleteMapping("/birds/{id}")
-  public Object deleteBird(@PathVariable Long id) {
-    birdService.deleteBird(id);
-    return birdService.getAllBirds();
-  }
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("bird", new Bird());
+        return "bird-create";
+    }
 
-  /**
-   * Endpoint to write a bird to a JSON file
-   *
-   * @param bird The bird to write
-   * @return An empty string indicating success
-   */
-  @PostMapping("/birds/writeFile")
-  public Object writeJson(@RequestBody Bird bird) {
-    return birdService.writeJson(bird);
-  }
+    @PostMapping("/new")
+    public String createBird(@ModelAttribute Bird bird,
+                             @RequestParam("image") MultipartFile imageFile) throws IOException {
+        if (!imageFile.isEmpty()) {
+            String fileName = imageFile.getOriginalFilename();
+            Path filePath = Paths.get(UPLOAD_DIR, fileName);
+            Files.write(filePath, imageFile.getBytes());
+            bird.setImageFileName(fileName);
+        }
+        birdService.addBird(bird);
+        return "redirect:/birds";
+    }
 
-  /**
-   * Endpoint to read a JSON file and return its contents
-   *
-   * @return The contents of the JSON file
-   */
-  @GetMapping("/birds/readFile")
-  public Object readJson() {
-    return birdService.readJson();
+    @GetMapping("/update/{id}")
+    public String showUpdateForm(@PathVariable Long id, Model model) {
+        Bird bird = birdService.getBirdById(id);
+        if (bird == null) return "redirect:/birds";
+        model.addAttribute("bird", bird);
+        return "bird-update";
+    }
 
-  }
+    @PostMapping("/update")
+    public String updateBird(@ModelAttribute Bird bird,
+                             @RequestParam("image") MultipartFile imageFile) throws IOException {
+        if (!imageFile.isEmpty()) {
+            String fileName = imageFile.getOriginalFilename();
+            Path filePath = Paths.get(UPLOAD_DIR, fileName);
+            Files.write(filePath, imageFile.getBytes());
+            bird.setImageFileName(fileName);
+        }
+        birdService.updateBird(bird.getBirdId(), bird);
+        return "redirect:/birds/" + bird.getBirdId();
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteBird(@PathVariable Long id) {
+        birdService.deleteBird(id);
+        return "redirect:/birds";
+    }
+
+    @GetMapping("/about")
+    public String aboutPage() {
+        return "about";
+    }
 }

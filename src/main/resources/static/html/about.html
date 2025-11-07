@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <style>
+        body, h1, h3, h5, p, input, button, a {
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+        }
+        header, section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        img {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+        }
+        div {
+            text-align: center;
+            max-width: 600px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+            padding: 0;
+            margin: 0;
+        }
+        nav a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>About Me</h1>
+    <nav>
+        <ul>
+            <li><a href="/birds">Home</a></li>
+            <li><a href="/birds/about">About</a></li>
+            <li><a href="/birds/new">Add Bird</a></li>
+        </ul>
+    </nav>
+</header>
+<section>
+    <img src="/images/caprisun.jpg" alt="Sample Image">
+    <div>
+        <h2>Description</h2>
+        <p>Welcome to my page! My name is Sarah Parisi (AKA Caprisun), and I'm a passionate amateur photographer and birder.
+           For me, photography is more than just capturing a moment; it's a way to connect with the world around me and share the
+           incredible beauty I discover, one bird at a time. Here, you'll find a catalog of my images and the stories behind my adventures.</p>
+    </div>
+</section>
+</body>
+</html>
